@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using SoftServe.ITAcademy.BackendDubbingProject.Models;
 
 namespace TestTaskCSCteam.Models
 {
@@ -21,5 +22,7 @@ namespace TestTaskCSCteam.Models
 
         [Required]
         public string Address { get; set; }
+
+        public ICollection<Organization> Organizations { get; set; }
     }
 }

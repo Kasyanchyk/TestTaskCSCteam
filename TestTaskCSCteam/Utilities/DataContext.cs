@@ -23,14 +23,24 @@ namespace TestTaskCSCteam.Utilities
 
         public DbSet<Department> Departments { get; set; }
 
-        public DataContext(DbContextOptions<DataContext> options):base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DataContext()
         {
+
         }
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasMany(x => x.Organizations).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Organization>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Country>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Business>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Family>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Offering>().HasMany(x => x.Children).WithOne(y => y.Offering).OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

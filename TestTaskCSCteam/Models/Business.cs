@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace TestTaskCSCteam.Models
 {
-    public class Business
+    public class Business : MenuItem<Country,Family>
     {
         [Required]
         public string Name { get; set; }

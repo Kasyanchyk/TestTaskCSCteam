@@ -13,11 +13,16 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TestTaskCSCteam.Utilities;
 using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
+using SimpleInjector;
+using SimpleInjector.Lifestyles;
+using SimpleInjector.Integration.AspNetCore.Mvc;
 
 namespace TestTaskCSCteam
 {
     public class Startup
     {
+        private Container container = new Container();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,9 +35,22 @@ namespace TestTaskCSCteam
         {
             var connection = Configuration.GetConnectionString("ConntectionString");
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection), ServiceLifetime.Transient);
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            IntegrateSimpleInjector(services);
+        }
+
+        private void IntegrateSimpleInjector(IServiceCollection services)
+        {
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+
+            services.AddTransient<DbContext, DataContext>();
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+
+            services.EnableSimpleInjectorCrossWiring(container);
+            services.UseSimpleInjectorAspNetRequestScoping(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

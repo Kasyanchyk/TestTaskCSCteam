@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestTaskCSCteam.Models
 {
-    public class Family
+    public class Family : MenuItem<Business, Offering>
     {
         [Required]
         public string Name { get; set; }
