@@ -32,18 +32,19 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<Country>> GetById(int id)
         {
-            var organization = _organizations.GetAllItems()
+            /*var organization = _organizations.GetAllItems()
                 .FirstOrDefault(x => x.Id == id);
 
             var countries = _countries.GetAllItems()
-                .Where(x => x.Parent == organization)
-                .Select(c => { c.Parent = null; return c; })
+                .Where(x => x.Organizations == organization)
+                .Select(c => { c.Organizations = null; return c; })
                 .ToList();
 
             if (!_organizations.GetAllItems().Any(x => x.Id == id))
                 return NotFound();
 
-            return Ok(countries);
+            return Ok(countries);*/
+            return Ok();
         }
 
         [HttpPost]

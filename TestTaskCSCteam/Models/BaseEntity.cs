@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SoftServe.ITAcademy.BackendDubbingProject.Models
+namespace TestTaskCSCteam.Models
 {
     public class BaseEntity
     {

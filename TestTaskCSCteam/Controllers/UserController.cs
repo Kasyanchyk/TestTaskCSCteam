@@ -43,7 +43,7 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<User> CreateTestUser()
         {
-            var user = new User
+            /*var user = new User
             {
                 Name = "name1", Surname = "surname1", Address = "address1", Email = "mail",
                 Organizations = new List<Organization>()
@@ -66,8 +66,8 @@ namespace TestTaskCSCteam.Controllers
                     } }
                 }
             };
-            _users.Create(user);
-            return Ok(user);
+            _users.Create(user);*/
+            return Ok();
         }
 
         [HttpPost]

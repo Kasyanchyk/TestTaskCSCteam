@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace TestTaskCSCteam.Models
 {
-    public class Family : MenuItem<Business, Offering>
+    public class Family : BaseEntity//MenuItem<Business, Offering>
     {
         [Required]
         public string Name { get; set; }
+
+        public Family Business { get; set; }
+
+        public ICollection<Offering> Offeringes { get; set; }
     }
 }

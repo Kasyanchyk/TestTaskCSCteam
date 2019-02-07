@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using SoftServe.ITAcademy.BackendDubbingProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

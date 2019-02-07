@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,9 +8,13 @@ using Newtonsoft.Json;
 
 namespace TestTaskCSCteam.Models
 {
-    public class Business : MenuItem<Country,Family>
+    public class Business : BaseEntity//MenuItem<Country, Family>
     {
         [Required]
         public string Name { get; set; }
+
+        public ICollection<ManyToManyEntity<Country, Business>> CountryBusinesses { get; set; }
+
+        public ICollection<Family> Families { get; set; }
     }
 }
