@@ -11,7 +11,7 @@ namespace TestTaskCSCteam.Utilities
     public class Repository<T> : IRepository<T>
         where T : BaseEntity
     {
-        private readonly DbSet<T> _entities;
+        protected readonly DbSet<T> _entities;
         private DataContext _context;
 
         public Repository(DataContext context)
@@ -20,7 +20,7 @@ namespace TestTaskCSCteam.Utilities
             _entities = context.Set<T>();
         }
 
-        public IEnumerable<T> GetAllItems(Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
+        public IQueryable<T> GetAllItems(Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
         {
             IQueryable<T> query = _entities;
 
@@ -29,7 +29,7 @@ namespace TestTaskCSCteam.Utilities
                 query = includes(query);
             }
 
-            return query.AsEnumerable();
+            return query;
         }
 
         public T GetItem(int id, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
@@ -44,9 +44,9 @@ namespace TestTaskCSCteam.Utilities
             return query.FirstOrDefault();
         }
 
+       
         public void Create(T entity)
         {
-            entity.Id = default(int);
             _entities.Add(entity);
             _context.SaveChanges();
         }

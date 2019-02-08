@@ -13,13 +13,15 @@ namespace TestTaskCSCteam.Controllers
     public class CountryController : Controller
     {
         private IRepository<Country> _countries;
-        private IRepository<Business> _businesses;
 
-        public CountryController(IRepository<Country> countries, IRepository<Business> businesses)
+        private IRepositoryChild<Business, Country> _businesses;
+
+        public CountryController(IRepositoryChild<Business, Country> businesses, IRepository<Country> countries)
         {
-            _countries = countries;
             _businesses = businesses;
+            _countries = countries;
         }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<Country>> Get()
@@ -30,33 +32,22 @@ namespace TestTaskCSCteam.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<Business>> GetById(int id)
+        public ActionResult<IEnumerable<Country>> GetBusinessesByIdCountry(int id)
         {
-            /*var countries = _countries.GetAllItems()
-                .FirstOrDefault(x => x.Id == id);
-
-            var businesses = _businesses.GetAllItems()
-                .Where(x => x.Countries == countries)
-                .Select(c => { c.Countries = null; return c; })
-                .ToList();
-
-            if (!_countries.GetAllItems().Any(x => x.Id == id))
-                return NotFound();
-
-            return Ok(countries);*/
-            return Ok();
+            var businesses = _businesses.GetItemsByParentId(id);
+            return Ok(businesses);
         }
 
-        /*[HttpPost]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Country> Create(Organization organization)
+        public ActionResult<Country> Create(Country country)
         {
-            if (organization == null)
+            if (country == null)
                 return BadRequest();
 
-            _organizations.Create(organization);
-            return Ok(organization);
+            _countries.Create(country);
+            return Ok(country);
         }
 
         [HttpDelete("{id}")]
@@ -64,12 +55,23 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Country> Delete(int id)
         {
-            var organization = _organizations.GetAllItems().FirstOrDefault(x => x.Id == id);
-            if (organization == null)
+            var country = _countries.GetAllItems().FirstOrDefault(x => x.Id == id);
+            if (country == null)
                 return NotFound();
 
-            _organizations.Delete(organization);
-            return organization;
-        }*/
+            _countries.Delete(country);
+            return Ok(country);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Country> Update(Country country)
+        {
+            if (!_countries.GetAllItems().Any(x => x.Id == country.Id))
+                return NotFound();
+            _countries.Update(country);
+            return Ok(country);
+        }
     }
 }

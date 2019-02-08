@@ -2,45 +2,64 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using TestTaskCSCteam.Models;
+using TestTaskCSCteam.Utilities;
 
 namespace TestTaskCSCteam.Controllers
 {
     [Route("api/[controller]")]
     public class DepartmentController : Controller
     {
-        // GET: api/<controller>
+        private IRepository<Department> _departments;
+
+        public DepartmentController(IRepository<Department> departments)
+        {
+            _departments = departments;
+        }
+
+        // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<IEnumerable<Department>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(_departments.GetAllItems());
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Department> Create(Department department)
         {
+            if (department == null)
+                return BadRequest();
+
+            _departments.Create(department);
+            return Ok(department);
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Department> Delete(int id)
         {
+            var department = _departments.GetAllItems().FirstOrDefault(x => x.Id == id);
+            if (department == null)
+                return NotFound();
+
+            _departments.Delete(department);
+            return Ok(department);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Department> Update(Department department)
+        {
+            if (!_departments.GetAllItems().Any(x => x.Id == department.Id))
+                return NotFound();
+            _departments.Update(department);
+            return Ok(department);
         }
     }
 }

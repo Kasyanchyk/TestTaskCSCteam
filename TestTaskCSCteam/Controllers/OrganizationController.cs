@@ -13,16 +13,18 @@ namespace TestTaskCSCteam.Controllers
     public class OrganizationController : Controller
     {
         private IRepository<Organization> _organizations;
-        private IRepository<Country> _countries;
 
-        public OrganizationController(IRepository<Organization> organizations, IRepository<Country> countries)
+        private IRepositoryChild<Country, Organization> _countries;
+
+        public OrganizationController(IRepositoryChild<Country, Organization> countries, IRepository<Organization> organizations)
         {
-            _organizations = organizations;
             _countries = countries;
+            _organizations = organizations;
         }
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<Organization>> Get()
+        public ActionResult<IEnumerable<Country>> Get()
         {
             return Ok(_organizations.GetAllItems());
         }
@@ -30,21 +32,10 @@ namespace TestTaskCSCteam.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<Country>> GetById(int id)
+        public ActionResult<IEnumerable<Country>> GetCountriesByIdOrganization(int id)
         {
-            /*var organization = _organizations.GetAllItems()
-                .FirstOrDefault(x => x.Id == id);
-
-            var countries = _countries.GetAllItems()
-                .Where(x => x.Organizations == organization)
-                .Select(c => { c.Organizations = null; return c; })
-                .ToList();
-
-            if (!_organizations.GetAllItems().Any(x => x.Id == id))
-                return NotFound();
-
-            return Ok(countries);*/
-            return Ok();
+            var countries = _countries.GetItemsByParentId(id);  
+            return Ok(countries);
         }
 
         [HttpPost]
@@ -69,7 +60,18 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
 
             _organizations.Delete(organization);
-            return organization;
+            return Ok(organization);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Organization> Update(Organization organization)
+        {
+            if (!_organizations.GetAllItems().Any(x => x.Id == organization.Id))
+                return NotFound();
+            _organizations.Update(organization);
+            return Ok(organization);
         }
     }
 }

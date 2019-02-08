@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TestTaskCSCteam.Models
 {
-    public class Department : BaseEntity
+    public class Department : BaseEntityChild<Offering>
     {
         [Required]
         public string Name { get; set; }
 
-        public Offering Offering { get; set; }
+        //public Offering Offering { get; set; }
     }
 }

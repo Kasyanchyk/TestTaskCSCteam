@@ -8,8 +8,7 @@ using Newtonsoft.Json;
 
 namespace TestTaskCSCteam.Models
 {
-    public class Country : BaseEntity
-        //MenuItem<Organization,Business>
+    public class Country : BaseEntityChild<Organization>
     {
         [Required]
         public string Name { get; set; }
@@ -17,8 +16,9 @@ namespace TestTaskCSCteam.Models
         [Required]
         public string Code { get; set; }
 
-        public ICollection<ManyToManyEntity<Organization, Country>> OrganizationCountries { get; set; }
+        //public Organization Organization { get; set; }
 
-        public ICollection<ManyToManyEntity<Country, Business>> CountryBusinesses { get; set; }
+        public ICollection<Business> Businesses { get; set; }
+
     }
 }

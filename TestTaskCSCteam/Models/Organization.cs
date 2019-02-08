@@ -17,13 +17,11 @@ namespace TestTaskCSCteam.Models
         public string Code { get; set; }
 
         [Required]
-        public string OrganiztionType { get; set; }
+        public string OrganizationType { get; set; }
 
         [Required]
         public string Owner { get; set; }
 
-        public User User { get; set; }
-
-        public ICollection<ManyToManyEntity<Organization,Country>> OrganizationCountries { get; set; }
+        public ICollection<Country> Countries { get; set; }
     }
 }

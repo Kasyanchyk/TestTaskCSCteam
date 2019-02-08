@@ -19,8 +19,7 @@
     },
     "TestTaskCSCteam": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/organization",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

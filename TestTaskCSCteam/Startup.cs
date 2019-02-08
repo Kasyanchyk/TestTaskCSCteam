@@ -16,6 +16,7 @@ using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using SimpleInjector.Integration.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace TestTaskCSCteam
 {
@@ -29,7 +30,6 @@ namespace TestTaskCSCteam
         }
 
         public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -37,9 +37,9 @@ namespace TestTaskCSCteam
 
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             IntegrateSimpleInjector(services);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         private void IntegrateSimpleInjector(IServiceCollection services)
@@ -48,6 +48,7 @@ namespace TestTaskCSCteam
 
             services.AddTransient<DbContext, DataContext>();
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient(typeof(IRepositoryChild<,>), typeof(RepositoryChild<,>));
 
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
@@ -67,6 +68,7 @@ namespace TestTaskCSCteam
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
         }
     }
 }

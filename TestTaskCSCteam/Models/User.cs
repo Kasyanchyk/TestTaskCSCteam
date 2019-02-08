@@ -22,6 +22,5 @@ namespace TestTaskCSCteam.Models
         [Required]
         public string Address { get; set; }
 
-        public ICollection<Organization> Organizations { get; set; }
     }
 }

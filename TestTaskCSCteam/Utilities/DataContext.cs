@@ -21,7 +21,7 @@ namespace TestTaskCSCteam.Utilities
 
         public DbSet<Offering> Offerings { get; set; }
 
-        public DbSet<Department> Departments { get; set; }
+        public DbSet<Department> Departments { get; set; } 
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -42,27 +42,27 @@ namespace TestTaskCSCteam.Utilities
             modelBuilder.Entity<Family>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Offering>().HasMany(x => x.Children).WithOne(y => y.Offering).OnDelete(DeleteBehavior.Cascade);*/
 
-            modelBuilder.Entity<ManyToManyEntity<Organization, Country>>()
-            .HasKey(t => new { t.TFirstId, t.TSecondId });
-            modelBuilder.Entity<ManyToManyEntity<Organization, Country>>()
-                .HasOne(sc => sc.TFirstObj)
+            /*modelBuilder.Entity<OrganizationCountry>()
+            .HasKey(t => new { t.OrganizationId, t.CountryId });
+            modelBuilder.Entity<OrganizationCountry>()
+                .HasOne(sc => sc.Organization)
                 .WithMany(s => s.OrganizationCountries)
-                .HasForeignKey(sc => sc.TFirstId);
-            modelBuilder.Entity<ManyToManyEntity<Organization, Country>>()
-                .HasOne(sc => sc.TSecondObj)
+                .HasForeignKey(sc => sc.OrganizationId);
+            modelBuilder.Entity<OrganizationCountry>()
+                .HasOne(sc => sc.Country)
                 .WithMany(c => c.OrganizationCountries)
-                .HasForeignKey(sc => sc.TSecondId);
+                .HasForeignKey(sc => sc.CountryId);
 
-            modelBuilder.Entity<ManyToManyEntity<Country, Business>>()
-            .HasKey(t => new { t.TFirstId, t.TSecondId });
-            modelBuilder.Entity<ManyToManyEntity<Country, Business>>()
-                .HasOne(sc => sc.TFirstObj)
+            modelBuilder.Entity<CountryBusiness>()
+            .HasKey(t => new { t.CountryId, t.BusinessId });
+            modelBuilder.Entity<CountryBusiness>()
+                .HasOne(sc => sc.Country)
                 .WithMany(s => s.CountryBusinesses)
-                .HasForeignKey(sc => sc.TFirstId);
-            modelBuilder.Entity<ManyToManyEntity<Country, Business>>()
-                .HasOne(sc => sc.TSecondObj)
+                .HasForeignKey(sc => sc.CountryId);
+            modelBuilder.Entity<CountryBusiness>()
+                .HasOne(sc => sc.Business)
                 .WithMany(c => c.CountryBusinesses)
-                .HasForeignKey(sc => sc.TSecondId);
+                .HasForeignKey(sc => sc.BusinessId);*/
         }
     }
 }

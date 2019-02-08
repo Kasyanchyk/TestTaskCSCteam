@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TestTaskCSCteam.Models
 {
-    public class Family : BaseEntity//MenuItem<Business, Offering>
+    public class Family : BaseEntityChild<Business>
     {
         [Required]
         public string Name { get; set; }
 
-        public Family Business { get; set; }
+        //public Business Business { get; set; }
 
         public ICollection<Offering> Offeringes { get; set; }
     }
