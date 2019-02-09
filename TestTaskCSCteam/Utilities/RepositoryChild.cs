@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace TestTaskCSCteam.Utilities
         private readonly DbSet<P> _entitiesP;
         private DataContext _context;
 
-        public RepositoryChild(DataContext context) :base(context)
+        public RepositoryChild(DataContext context,
+            ILogger<T> logger) :base(context, logger)
         {
             _context = context;
             _entitiesP = context.Set<P>();
@@ -23,6 +25,7 @@ namespace TestTaskCSCteam.Utilities
 
         public IQueryable<T> GetItemsByParentId(int id, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
         {
+            _logger.LogInformation("Getting {0} items by {1} id", typeof(P), typeof(T));
             var objectP = _entitiesP.FirstOrDefault(x=>x.Id==id);
             IQueryable<T> query = _entities.Where(x => x.Parent == objectP);
             if (includes != null)

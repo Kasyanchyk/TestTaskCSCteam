@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TestTaskCSCteam.Models;
 using TestTaskCSCteam.Utilities;
 
@@ -16,7 +17,9 @@ namespace TestTaskCSCteam.Controllers
 
         private IRepositoryChild<Country, Organization> _countries;
 
-        public OrganizationController(IRepositoryChild<Country, Organization> countries, IRepository<Organization> organizations)
+        public OrganizationController(IRepositoryChild<Country, 
+            Organization> countries, 
+            IRepository<Organization> organizations)
         {
             _countries = countries;
             _organizations = organizations;
