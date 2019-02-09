@@ -22,13 +22,22 @@ namespace TestTaskCSCteam.Controllers
             _offerings = offerings;
         }
 
-        // GET api/values
+        /// <summary>
+        /// Get all offerings
+        /// </summary>
+        /// <returns>Array of offerings.</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<Department>> Get()
+        public ActionResult<IEnumerable<Offering>> Get()
         {
             return Ok(_offerings.GetAllItems());
         }
 
+        /// <summary>
+        /// Get departments by id offering
+        /// </summary>
+        /// <returns>Departments with the following offering id</returns>
+        /// <response code="200">Returns departments with the following offering id</response>
+        /// <response code="404">If the offering with the following id does not exist</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -38,6 +47,13 @@ namespace TestTaskCSCteam.Controllers
             return Ok(departments);
         }
 
+        /// <summary>
+        /// Creates a new offering.
+        /// </summary>
+        /// <param name="offering"></param>
+        /// <returns>A newly created offering.</returns>
+        /// <response code="201">Returns the newly created offering.</response>
+        /// <response code="400">If the offering is not valid.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -47,9 +63,16 @@ namespace TestTaskCSCteam.Controllers
                 return BadRequest();
 
             _offerings.Create(offering);
-            return Ok(offering);
+            return CreatedAtAction(nameof(Create), offering);
         }
 
+        /// <summary>
+        /// Deletes the offering.
+        /// </summary>
+        /// <param name="id">Offering id.</param>
+        /// <returns>Deleted offering.</returns>
+        /// <response code="200">Returns the deleted offering.</response>
+        /// <response code="404">If the offering with the following id does not exist.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,9 +86,18 @@ namespace TestTaskCSCteam.Controllers
             return Ok(offering);
         }
 
+        /// <summary>
+        /// Updates the offering.
+        /// </summary>
+        /// <param name="offering"></param>
+        /// <returns>An updated offering.</returns>
+        /// <response code="200">Returns the updated offering.</response>
+        /// <response code="400">If the offering is not valid.</response>
+        /// <response code="404">If the offering with the following id does not exist.</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Offering> Update(Offering offering)
         {
             if (!_offerings.GetAllItems().Any(x => x.Id == offering.Id))

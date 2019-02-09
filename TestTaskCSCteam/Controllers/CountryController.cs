@@ -22,22 +22,38 @@ namespace TestTaskCSCteam.Controllers
             _countries = countries;
         }
 
-        // GET api/values
+        /// <summary>
+        /// Get all countries
+        /// </summary>
+        /// <returns>Array of countries.</returns>
         [HttpGet]
         public ActionResult<IEnumerable<Country>> Get()
         {
             return Ok(_countries.GetAllItems());
         }
 
+        /// <summary>
+        /// Get businesses by id country
+        /// </summary>
+        /// <returns>Businesses with the following country id</returns>
+        /// <response code="200">Returns businesses with the following country id</response>
+        /// <response code="404">If the country with the following id does not exist</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<Country>> GetBusinessesByIdCountry(int id)
+        public ActionResult<IEnumerable<Business>> GetBusinessesByIdCountry(int id)
         {
             var businesses = _businesses.GetItemsByParentId(id);
             return Ok(businesses);
         }
 
+        /// <summary>
+        /// Creates a new country.
+        /// </summary>
+        /// <param name="country"></param>
+        /// <returns>A newly created country.</returns>
+        /// <response code="201">Returns the newly created country.</response>
+        /// <response code="400">If the country is not valid.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -47,9 +63,16 @@ namespace TestTaskCSCteam.Controllers
                 return BadRequest();
 
             _countries.Create(country);
-            return Ok(country);
+            return CreatedAtAction(nameof(Create), country);
         }
 
+        /// <summary>
+        /// Deletes the country.
+        /// </summary>
+        /// <param name="id">Country id.</param>
+        /// <returns>Deleted country.</returns>
+        /// <response code="200">Returns the deleted country.</response>
+        /// <response code="404">If the country with the following id does not exist.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,9 +86,18 @@ namespace TestTaskCSCteam.Controllers
             return Ok(country);
         }
 
+        /// <summary>
+        /// Updates the country.
+        /// </summary>
+        /// <param name="country"></param>
+        /// <returns>An updated country.</returns>
+        /// <response code="200">Returns the updated country.</response>
+        /// <response code="400">If the country is not valid.</response>
+        /// <response code="404">If the country with the following id does not exist.</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Country> Update(Country country)
         {
             if (!_countries.GetAllItems().Any(x => x.Id == country.Id))

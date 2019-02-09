@@ -17,6 +17,9 @@ using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Reflection;
+using System.IO;
 
 namespace TestTaskCSCteam
 {
@@ -40,6 +43,14 @@ namespace TestTaskCSCteam
             IntegrateSimpleInjector(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "APIs", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         private void IntegrateSimpleInjector(IServiceCollection services)
@@ -66,6 +77,11 @@ namespace TestTaskCSCteam
                 app.UseHsts();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "APIs V1");
+            });
             app.UseHttpsRedirection();
             app.UseMvc();
 

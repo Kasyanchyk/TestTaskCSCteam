@@ -22,13 +22,22 @@ namespace TestTaskCSCteam.Controllers
             _families = families;
         }
 
-        // GET api/values
+        /// <summary>
+        /// Get all families
+        /// </summary>
+        /// <returns>Array of families.</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<Offering>> Get()
+        public ActionResult<IEnumerable<Family>> Get()
         {
             return Ok(_families.GetAllItems());
         }
-
+        
+        /// <summary>
+        /// Get offerings by id family
+        /// </summary>
+        /// <returns>Offerings with the following family id</returns>
+        /// <response code="200">Returns offerings with the following family id</response>
+        /// <response code="404">If the family with the following id does not exist</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -38,6 +47,13 @@ namespace TestTaskCSCteam.Controllers
             return Ok(offerings);
         }
 
+        /// <summary>
+        /// Creates a new family.
+        /// </summary>
+        /// <param name="family"></param>
+        /// <returns>A newly created family.</returns>
+        /// <response code="201">Returns the newly created family.</response>
+        /// <response code="400">If the family is not valid.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -47,9 +63,16 @@ namespace TestTaskCSCteam.Controllers
                 return BadRequest();
 
             _families.Create(family);
-            return Ok(family);
+            return CreatedAtAction(nameof(Create), family);
         }
 
+        /// <summary>
+        /// Deletes the family.
+        /// </summary>
+        /// <param name="id">Family id.</param>
+        /// <returns>Deleted family.</returns>
+        /// <response code="200">Returns the deleted family.</response>
+        /// <response code="404">If the family with the following id does not exist.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,9 +86,18 @@ namespace TestTaskCSCteam.Controllers
             return Ok(family);
         }
 
+        /// <summary>
+        /// Updates the family.
+        /// </summary>
+        /// <param name="family"></param>
+        /// <returns>An updated family.</returns>
+        /// <response code="200">Returns the updated family.</response>
+        /// <response code="400">If the family is not valid.</response>
+        /// <response code="404">If the family with the following id does not exist.</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Family> Update(Family family)
         {
             if (!_families.GetAllItems().Any(x => x.Id == family.Id))

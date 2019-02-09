@@ -19,13 +19,23 @@ namespace TestTaskCSCteam.Controllers
             _departments = departments;
         }
 
-        // GET api/values
+        /// <summary>
+        /// Get all departments
+        /// </summary>
+        /// <returns>Array of departments.</returns>
         [HttpGet]
         public ActionResult<IEnumerable<Department>> Get()
         {
             return Ok(_departments.GetAllItems());
         }
 
+        /// <summary>
+        /// Creates a new department.
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns>A newly created department.</returns>
+        /// <response code="201">Returns the newly created department.</response>
+        /// <response code="400">If the department is not valid.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -35,9 +45,16 @@ namespace TestTaskCSCteam.Controllers
                 return BadRequest();
 
             _departments.Create(department);
-            return Ok(department);
+            return CreatedAtAction(nameof(Create), department);
         }
 
+        /// <summary>
+        /// Deletes the department.
+        /// </summary>
+        /// <param name="id">Department id.</param>
+        /// <returns>Deleted department.</returns>
+        /// <response code="200">Returns the deleted department.</response>
+        /// <response code="404">If the department with the following id does not exist.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -51,9 +68,18 @@ namespace TestTaskCSCteam.Controllers
             return Ok(department);
         }
 
+        /// <summary>
+        /// Updates the department.
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns>An updated department.</returns>
+        /// <response code="200">Returns the updated department.</response>
+        /// <response code="400">If the department is not valid.</response>
+        /// <response code="404">If the department with the following id does not exist.</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Department> Update(Department department)
         {
             if (!_departments.GetAllItems().Any(x => x.Id == department.Id))
