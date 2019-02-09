@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -59,10 +60,15 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Country> Create(Country country)
         {
-            if (country == null)
+            try
+            {
+                _countries.Create(country);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            {
                 return BadRequest();
+            }
 
-            _countries.Create(country);
             return CreatedAtAction(nameof(Create), country);
         }
 

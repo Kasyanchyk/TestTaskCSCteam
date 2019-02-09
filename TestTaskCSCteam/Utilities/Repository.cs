@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TestTaskCSCteam.Models;
@@ -44,7 +45,7 @@ namespace TestTaskCSCteam.Utilities
             return query.FirstOrDefault();
         }
 
-       
+
         public void Create(T entity)
         {
             _entities.Add(entity);

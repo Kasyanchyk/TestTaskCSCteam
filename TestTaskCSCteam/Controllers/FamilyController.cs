@@ -59,10 +59,15 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Family> Create(Family family)
         {
-            if (family == null)
+            try
+            {
+                _families.Create(family);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            {
                 return BadRequest();
+            }
 
-            _families.Create(family);
             return CreatedAtAction(nameof(Create), family);
         }
 

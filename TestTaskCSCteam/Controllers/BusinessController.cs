@@ -59,10 +59,15 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Business> Create(Business business)
         {
-            if (business == null)
+            try
+            {
+                _businesses.Create(business);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            {
                 return BadRequest();
+            }
 
-            _businesses.Create(business);
             return CreatedAtAction(nameof(Create), business);
         }
 

@@ -41,10 +41,15 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Department> Create(Department department)
         {
-            if (department == null)
+            try
+            {
+                _departments.Create(department);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            {
                 return BadRequest();
+            }
 
-            _departments.Create(department);
             return CreatedAtAction(nameof(Create), department);
         }
 

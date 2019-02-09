@@ -35,34 +35,42 @@ namespace TestTaskCSCteam.Utilities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*modelBuilder.Entity<User>().HasMany(x => x.Organizations).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Organization>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Country>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Business>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Family>().HasMany(x => x.Children).WithOne(y => y.Parent).OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Offering>().HasMany(x => x.Children).WithOne(y => y.Offering).OnDelete(DeleteBehavior.Cascade);*/
+            modelBuilder.Entity<Organization>()
+                .HasMany(x => x.Countries)
+                .WithOne(y => y.Parent)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Country>()
+                .HasMany(x => x.Businesses)
+                .WithOne(y => y.Parent)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Business>()
+                .HasMany(x => x.Families)
+                .WithOne(y => y.Parent)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Family>()
+                .HasMany(x => x.Offeringes)
+                .WithOne(y => y.Parent)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Offering>()
+                .HasMany(x => x.Departments)
+                .WithOne(y => y.Parent)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            /*modelBuilder.Entity<OrganizationCountry>()
-            .HasKey(t => new { t.OrganizationId, t.CountryId });
-            modelBuilder.Entity<OrganizationCountry>()
-                .HasOne(sc => sc.Organization)
-                .WithMany(s => s.OrganizationCountries)
-                .HasForeignKey(sc => sc.OrganizationId);
-            modelBuilder.Entity<OrganizationCountry>()
-                .HasOne(sc => sc.Country)
-                .WithMany(c => c.OrganizationCountries)
-                .HasForeignKey(sc => sc.CountryId);
-
-            modelBuilder.Entity<CountryBusiness>()
-            .HasKey(t => new { t.CountryId, t.BusinessId });
-            modelBuilder.Entity<CountryBusiness>()
-                .HasOne(sc => sc.Country)
-                .WithMany(s => s.CountryBusinesses)
-                .HasForeignKey(sc => sc.CountryId);
-            modelBuilder.Entity<CountryBusiness>()
-                .HasOne(sc => sc.Business)
-                .WithMany(c => c.CountryBusinesses)
-                .HasForeignKey(sc => sc.BusinessId);*/
+            modelBuilder.Entity<Country>()
+                .HasIndex(t => new { t.Name, t.ParentId })
+                .IsUnique();
+            modelBuilder.Entity<Business>()
+                .HasIndex(t => new { t.Name, t.ParentId })
+                .IsUnique();
+            modelBuilder.Entity<Family>()
+                .HasIndex(t => new { t.Name, t.ParentId })
+                .IsUnique();
+            modelBuilder.Entity<Offering>()
+                .HasIndex(t => new { t.Name, t.ParentId })
+                .IsUnique();
+            modelBuilder.Entity<Department>()
+                .HasIndex(t => new { t.Name, t.ParentId })
+                .IsUnique();
         }
     }
 }

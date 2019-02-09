@@ -62,7 +62,6 @@ namespace TestTaskCSCteam.Controllers
         {
             if (organization == null)
                 return BadRequest();
-
             _organizations.Create(organization);
             return CreatedAtAction(nameof(Create),organization);
         }
