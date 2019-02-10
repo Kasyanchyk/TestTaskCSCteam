@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ using TestTaskCSCteam.Utilities;
 
 namespace TestTaskCSCteam.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class OrganizationController : Controller
     {
@@ -29,6 +31,7 @@ namespace TestTaskCSCteam.Controllers
         /// Get all organizations
         /// </summary>
         /// <returns>Array of organizations.</returns>
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<Organization>> Get()
         {
@@ -42,6 +45,7 @@ namespace TestTaskCSCteam.Controllers
         /// <returns>Countries with the following organization id</returns>
         /// <response code="200">Returns countries with the following organization id</response>
         /// <response code="404">If the organization with the following id does not exist</response>
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

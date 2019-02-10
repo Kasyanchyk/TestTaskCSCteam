@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,8 @@ using TestTaskCSCteam.Models;
 
 namespace TestTaskCSCteam.Utilities
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
-
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Organization> Organizations { get; set; }
@@ -71,6 +70,8 @@ namespace TestTaskCSCteam.Utilities
             modelBuilder.Entity<Department>()
                 .HasIndex(t => new { t.Name, t.ParentId })
                 .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

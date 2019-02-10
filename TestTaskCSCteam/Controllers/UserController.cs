@@ -14,24 +14,23 @@ namespace TestTaskCSCteam.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private IRepository<User> _users;
+        
         private IRepository<Organization> _organizations;
 
 
-        public UserController(IRepository<User> users, 
-            IRepository<Organization> organizations)
+        public UserController(IRepository<Organization> organizations)
         {
-            _users = users;
+            
             _organizations = organizations;
         }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<User>> Get()
         {
-            return Ok(_users.GetAllItems());
+            return Ok();
         }
 
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<User> GetById(int id)
@@ -40,7 +39,7 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
 
             return _users.GetItem(id);
-        }
+        }*/
 
         [HttpGet("createTest")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -103,13 +102,13 @@ namespace TestTaskCSCteam.Controllers
             var country1 = new Country { Name = "usa", Code = "111", Businesses = new List<Business>() {business1,business2 } };
             var country2 = new Country { Name = "eng", Code = "222", Businesses = new List<Business>() { business1, business2 } };
 
-            var user = new User
+            /*var user = new User
             {
                 Name = "name1",
                 Surname = "surname1",
                 Address = "address1",
                 Email = "mail"
-            };
+            };*/
 
             var organizations = new List<Organization>()
                     {
@@ -120,7 +119,7 @@ namespace TestTaskCSCteam.Controllers
             _organizations.Create(organizations[0]);
             _organizations.Create(organizations[1]);
             _organizations.Create(organizations[2]);
-            _users.Create(user);
+            //_users.Create(user);
 
             /*var orgCountry1 = new OrganizationCountry { Country = country1, Organization = user.Organizations.ToList()[0] };
             var orgCountry2 = new OrganizationCountry { Country = country2, Organization = user.Organizations.ToList()[1] };
@@ -139,7 +138,7 @@ namespace TestTaskCSCteam.Controllers
             _countryBusinesses.Create(countryBusiness2);
             _countryBusinesses.Create(countryBusiness3);*/
 
-            return Ok(user);
+            return Ok();
     }
 
     [HttpPost]
@@ -150,11 +149,11 @@ namespace TestTaskCSCteam.Controllers
         if (user == null)
             return BadRequest();
 
-        _users.Create(user);
-        return Ok(user);
+        
+        return Ok();
     }
 
-    [HttpDelete("{id}")]
+    /*[HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<User> Delete(int id)
@@ -165,7 +164,7 @@ namespace TestTaskCSCteam.Controllers
 
         _users.Delete(user);
         return user;
-    }
+    }*/
 
 }
 }

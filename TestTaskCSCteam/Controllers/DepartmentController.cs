@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCSCteam.Models;
@@ -9,6 +10,7 @@ using TestTaskCSCteam.Utilities;
 
 namespace TestTaskCSCteam.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class DepartmentController : Controller
     {
@@ -23,6 +25,7 @@ namespace TestTaskCSCteam.Controllers
         /// Get all departments
         /// </summary>
         /// <returns>Array of departments.</returns>
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<Department>> Get()
         {

@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Routing;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
+using TestTaskCSCteam.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TestTaskCSCteam
 {
@@ -33,12 +36,16 @@ namespace TestTaskCSCteam
         }
 
         public IConfiguration Configuration { get; }
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("ConntectionString");
 
             services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<DbContext>()
+                .AddDefaultTokenProviders();
 
             IntegrateSimpleInjector(services);
 
@@ -51,6 +58,19 @@ namespace TestTaskCSCteam
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = "344066426321355";
+                facebookOptions.AppSecret = "fe79743388ccb46595c7045eb4486072";
+            })
+            .AddCookie();
         }
 
         private void IntegrateSimpleInjector(IServiceCollection services)
@@ -65,7 +85,6 @@ namespace TestTaskCSCteam
             services.UseSimpleInjectorAspNetRequestScoping(container);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -83,6 +102,7 @@ namespace TestTaskCSCteam
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "APIs V1");
             });
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
 
         }

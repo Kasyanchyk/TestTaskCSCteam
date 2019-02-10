@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCSCteam.Models;
@@ -9,6 +10,7 @@ using TestTaskCSCteam.Utilities;
 
 namespace TestTaskCSCteam.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class BusinessController : Controller
     {
@@ -26,6 +28,7 @@ namespace TestTaskCSCteam.Controllers
         /// Get all businesses
         /// </summary>
         /// <returns>Array of businesses.</returns>
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<Business>> Get()
         {
@@ -38,6 +41,7 @@ namespace TestTaskCSCteam.Controllers
         /// <returns>Families with the following business id</returns>
         /// <response code="200">Returns families with the following business id</response>
         /// <response code="404">If the business with the following id does not exist</response>
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

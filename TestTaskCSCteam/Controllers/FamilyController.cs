@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCSCteam.Models;
@@ -9,6 +10,7 @@ using TestTaskCSCteam.Utilities;
 
 namespace TestTaskCSCteam.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class FamilyController : Controller
     {
@@ -26,18 +28,20 @@ namespace TestTaskCSCteam.Controllers
         /// Get all families
         /// </summary>
         /// <returns>Array of families.</returns>
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<Family>> Get()
         {
             return Ok(_families.GetAllItems());
         }
-        
+
         /// <summary>
         /// Get offerings by id family
         /// </summary>
         /// <returns>Offerings with the following family id</returns>
         /// <response code="200">Returns offerings with the following family id</response>
         /// <response code="404">If the family with the following id does not exist</response>
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
