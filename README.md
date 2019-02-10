@@ -3,7 +3,7 @@
 I used technology stack:
 - ASP .Net Core (Web API)
 - ORM: Entity Framework Core
-- BD: MSSQL Server
+- DB: MSSQL Server
 - IoC: Simple Injector
 - Unit tests: XUnit, dotCover
 - Documentation: Swagger
