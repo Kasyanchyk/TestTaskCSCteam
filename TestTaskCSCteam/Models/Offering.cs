@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TestTaskCSCteam.Models
@@ -8,8 +9,7 @@ namespace TestTaskCSCteam.Models
         [Required]
         public string Name { get; set; }
 
+        [JsonIgnore]
         public ICollection<Department> Departments { get; set; }
-
-        //public Family Family { get; set; }
     }
 }

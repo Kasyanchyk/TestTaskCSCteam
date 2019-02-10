@@ -68,6 +68,7 @@ namespace TestTaskCSCteamTests
             Assert.Equal(listItems[0].Id, result.Value.Id);
         }
 
+        [Fact]
         public void GetById_InvalidId_ShouldReturnNotFoundResult()
         {
             mock.Setup(repo => repo.GetAllItems(null)).Returns(listItems.AsQueryable());

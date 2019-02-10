@@ -6,7 +6,5 @@ namespace TestTaskCSCteam.Models
     {
         [Required]
         public string Name { get; set; }
-
-        //public Offering Offering { get; set; }
     }
 }

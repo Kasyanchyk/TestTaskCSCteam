@@ -9,8 +9,7 @@ namespace TestTaskCSCteam.Models
         [Required]
         public string Name { get; set; }
 
+        [JsonIgnore]
         public ICollection<Family> Families { get; set; }
-
-        //public Country Country { get; set; }
     }
 }

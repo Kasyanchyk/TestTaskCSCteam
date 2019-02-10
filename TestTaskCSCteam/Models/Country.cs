@@ -12,8 +12,7 @@ namespace TestTaskCSCteam.Models
         [Required]
         public string Code { get; set; }
 
-        //public Organization Organization { get; set; }
-
+        [JsonIgnore]
         public ICollection<Business> Businesses { get; set; }
 
     }

@@ -18,6 +18,7 @@ namespace TestTaskCSCteam.Models
         [Required]
         public string Owner { get; set; }
 
+        [JsonIgnore]
         public ICollection<Country> Countries { get; set; }
     }
 }
