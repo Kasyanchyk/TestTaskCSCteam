@@ -22,6 +22,8 @@ Api has this structure (item is a member of the hierarchy, for example **Organiz
 - GET: api/auth/signout - Signout and redirect to /api/organization.
 ### Test Data
 Use GET: api/create-test-data
+## Documentation
+Use https://localhost:port/swagger for get swagger documentation.
 
 ## Json Templates
 ### Organization API
