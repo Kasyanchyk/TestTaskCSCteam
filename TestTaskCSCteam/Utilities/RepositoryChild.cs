@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TestTaskCSCteam.Models;
 
 namespace TestTaskCSCteam.Utilities

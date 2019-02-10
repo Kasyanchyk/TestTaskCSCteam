@@ -2,10 +2,7 @@
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
 using TestTaskCSCteam.Models;
 
 namespace TestTaskCSCteam.Utilities
@@ -31,7 +28,7 @@ namespace TestTaskCSCteam.Utilities
 
             IQueryable<T> query = _entities;
 
-            if(query==null)
+            if (query == null)
             {
                 _logger.LogWarning("{0} items NOT FOUND", typeof(T));
             }
@@ -66,24 +63,46 @@ namespace TestTaskCSCteam.Utilities
 
         public void Create(T entity)
         {
-            _logger.LogInformation("Creating {0} item", typeof(T));
-            _entities.Add(entity);
-            _context.SaveChanges();
+            try
+            {
+                _logger.LogInformation("Creating {0} item", typeof(T));
+                _entities.Add(entity);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "{0} item", typeof(T));
+            }
+
         }
 
         public void Update(T entity)
         {
-            _logger.LogInformation("Updating {0} item", typeof(T));
-            T exist = _entities.Find(entity.Id);
-            _context.Entry(exist).CurrentValues.SetValues(entity);
-            _context.SaveChanges();
+            try
+            {
+                _logger.LogInformation("Updating {0} item", typeof(T));
+                T exist = _entities.Find(entity.Id);
+                _context.Entry(exist).CurrentValues.SetValues(entity);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "{0} item", typeof(T));
+            }
         }
 
         public void Delete(T entity)
         {
-            _logger.LogInformation("Deleting {0} item", typeof(T));
-            _entities.Remove(entity);
-            _context.SaveChanges();
+            try
+            {
+                _logger.LogInformation("Deleting {0} item", typeof(T));
+                _entities.Remove(entity);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "{0} item", typeof(T));
+            }
         }
     }
 }

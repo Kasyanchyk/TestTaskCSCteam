@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 namespace TestTaskCSCteam.Controllers
 {
-    [AllowAnonymous]
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
@@ -21,7 +20,11 @@ namespace TestTaskCSCteam.Controllers
         {
             this.authenticationSchemeProvider = authenticationSchemeProvider;
         }
-        
+
+        /// <summary>
+        /// Get authorize status
+        /// </summary>
+        /// <returns>String with informations</returns>
         [HttpGet]
         public ActionResult<string> Status()
         {
@@ -35,12 +38,20 @@ namespace TestTaskCSCteam.Controllers
             }
         }
 
+        /// <summary>
+        /// Redirect to Facebook authorize page and redirect to /api/organization
+        /// </summary>
+        /// <returns>The created Microsoft.AspNetCore.Mvc.ChallengeResult for the response.</returns>
         [HttpGet("signin")]
-        public IActionResult SignIn(String provider)
+        public IActionResult SignIn()
         {
             return Challenge(new AuthenticationProperties { RedirectUri = "/api/organization" }, "Facebook");
         }
 
+        /// <summary>
+        /// Signout and redirect to /api/organization
+        /// </summary>
+        /// <returns>Redirect</returns>
         [Authorize]
         [HttpGet("signout")]
         public async Task<IActionResult> SignOut()
