@@ -30,9 +30,9 @@ namespace TestTaskCSCteam.Controllers
         /// <returns>Array of businesses.</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<IEnumerable<Business>> Get()
+        public IEnumerable<Business> Get()
         {
-            return Ok(_businesses.GetAllItems());
+            return _businesses.GetAllItems();
         }
 
         /// <summary>
@@ -42,13 +42,33 @@ namespace TestTaskCSCteam.Controllers
         /// <response code="200">Returns families with the following business id</response>
         /// <response code="404">If the business with the following id does not exist</response>
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("family/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<Family>> GetFamiliesByIdBusiness(int id)
         {
+            if (!_businesses.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
             var families = _families.GetItemsByParentId(id);
-            return Ok(families);
+            return families.ToList(); ;
+        }
+
+        /// <summary>
+        /// Get business by id.
+        /// </summary>
+        /// <returns>Business with the following id.</returns>
+        /// <response code="200">Returns the business with the following id.</response>
+        /// <response code="404">If the business with the following id does not exist.</response
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Business> GetById(int id)
+        {
+            if (!_businesses.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
+
+            return _businesses.GetItem(id);
         }
 
         /// <summary>
@@ -65,6 +85,8 @@ namespace TestTaskCSCteam.Controllers
         {
             try
             {
+                if (business == null)
+                    return BadRequest();
                 _businesses.Create(business);
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
@@ -92,7 +114,7 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
 
             _businesses.Delete(business);
-            return Ok(business);
+            return business;
         }
 
         /// <summary>
@@ -112,7 +134,7 @@ namespace TestTaskCSCteam.Controllers
             if (!_businesses.GetAllItems().Any(x => x.Id == business.Id))
                 return NotFound();
             _businesses.Update(business);
-            return Ok(business);
+            return business;
         }
     }
 }

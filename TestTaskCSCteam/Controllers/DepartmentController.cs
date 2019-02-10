@@ -27,9 +27,27 @@ namespace TestTaskCSCteam.Controllers
         /// <returns>Array of departments.</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<IEnumerable<Department>> Get()
+        public IEnumerable<Department> Get()
         {
-            return Ok(_departments.GetAllItems());
+            return _departments.GetAllItems();
+        }
+
+        /// <summary>
+        /// Get department by id.
+        /// </summary>
+        /// <returns>Department with the following id.</returns>
+        /// <response code="200">Returns the department with the following id.</response>
+        /// <response code="404">If the department with the following id does not exist.</response
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Department> GetById(int id)
+        {
+            if (!_departments.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
+
+            return _departments.GetItem(id);
         }
 
         /// <summary>
@@ -46,6 +64,8 @@ namespace TestTaskCSCteam.Controllers
         {
             try
             {
+                if (department == null)
+                    return BadRequest();
                 _departments.Create(department);
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
@@ -73,7 +93,7 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
 
             _departments.Delete(department);
-            return Ok(department);
+            return department;
         }
 
         /// <summary>
@@ -93,7 +113,7 @@ namespace TestTaskCSCteam.Controllers
             if (!_departments.GetAllItems().Any(x => x.Id == department.Id))
                 return NotFound();
             _departments.Update(department);
-            return Ok(department);
+            return department;
         }
     }
 }

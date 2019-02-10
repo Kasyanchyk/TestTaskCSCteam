@@ -30,9 +30,9 @@ namespace TestTaskCSCteam.Controllers
         /// <returns>Array of families.</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<IEnumerable<Family>> Get()
+        public IEnumerable<Family> Get()
         {
-            return Ok(_families.GetAllItems());
+            return _families.GetAllItems();
         }
 
         /// <summary>
@@ -42,13 +42,33 @@ namespace TestTaskCSCteam.Controllers
         /// <response code="200">Returns offerings with the following family id</response>
         /// <response code="404">If the family with the following id does not exist</response>
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("offering/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<Offering>> GetOfferingsByIdFamily(int id)
         {
+            if (!_families.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
             var offerings = _offerings.GetItemsByParentId(id);
-            return Ok(offerings);
+            return offerings.ToList();
+        }
+
+        /// <summary>
+        /// Get family by id.
+        /// </summary>
+        /// <returns>Family with the following id.</returns>
+        /// <response code="200">Returns the family with the following id.</response>
+        /// <response code="404">If the family with the following id does not exist.</response
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Family> GetById(int id)
+        {
+            if (!_families.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
+
+            return _families.GetItem(id);
         }
 
         /// <summary>
@@ -65,6 +85,8 @@ namespace TestTaskCSCteam.Controllers
         {
             try
             {
+                if (family == null)
+                    return BadRequest();
                 _families.Create(family);
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
@@ -92,7 +114,7 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
 
             _families.Delete(family);
-            return Ok(family);
+            return family;
         }
 
         /// <summary>
@@ -112,7 +134,7 @@ namespace TestTaskCSCteam.Controllers
             if (!_families.GetAllItems().Any(x => x.Id == family.Id))
                 return NotFound();
             _families.Update(family);
-            return Ok(family);
+            return family;
         }
     }
 }

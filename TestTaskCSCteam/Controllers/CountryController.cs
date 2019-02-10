@@ -31,9 +31,9 @@ namespace TestTaskCSCteam.Controllers
         /// <returns>Array of countries.</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<IEnumerable<Country>> Get()
+        public IEnumerable<Country> Get()
         {
-            return Ok(_countries.GetAllItems());
+            return _countries.GetAllItems();
         }
 
         /// <summary>
@@ -43,13 +43,33 @@ namespace TestTaskCSCteam.Controllers
         /// <response code="200">Returns businesses with the following country id</response>
         /// <response code="404">If the country with the following id does not exist</response>
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("business/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<Business>> GetBusinessesByIdCountry(int id)
         {
+            if (!_countries.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
             var businesses = _businesses.GetItemsByParentId(id);
-            return Ok(businesses);
+            return businesses.ToList();
+        }
+
+        /// <summary>
+        /// Get country by id.
+        /// </summary>
+        /// <returns>Country with the following id.</returns>
+        /// <response code="200">Returns the country with the following id.</response>
+        /// <response code="404">If the country with the following id does not exist.</response
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Country> GetById(int id)
+        {
+            if (!_countries.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
+
+            return _countries.GetItem(id);
         }
 
         /// <summary>
@@ -66,6 +86,8 @@ namespace TestTaskCSCteam.Controllers
         {
             try
             {
+                if (country == null)
+                    return BadRequest();
                 _countries.Create(country);
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
@@ -93,7 +115,7 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
 
             _countries.Delete(country);
-            return Ok(country);
+            return country;
         }
 
         /// <summary>
@@ -113,7 +135,7 @@ namespace TestTaskCSCteam.Controllers
             if (!_countries.GetAllItems().Any(x => x.Id == country.Id))
                 return NotFound();
             _countries.Update(country);
-            return Ok(country);
+            return country;
         }
     }
 }

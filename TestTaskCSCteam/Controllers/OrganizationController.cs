@@ -33,10 +33,9 @@ namespace TestTaskCSCteam.Controllers
         /// <returns>Array of organizations.</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<IEnumerable<Organization>> Get()
+        public IEnumerable<Organization> Get()
         {
-            string str = nameof(Create);
-            return Ok(_organizations.GetAllItems());
+            return _organizations.GetAllItems();
         }
 
         /// <summary>
@@ -46,13 +45,33 @@ namespace TestTaskCSCteam.Controllers
         /// <response code="200">Returns countries with the following organization id</response>
         /// <response code="404">If the organization with the following id does not exist</response>
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("country/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<Country>> GetCountriesByIdOrganization(int id)
         {
-            var countries = _countries.GetItemsByParentId(id);  
-            return Ok(countries);
+            if (!_organizations.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
+            var countries = _countries.GetItemsByParentId(id);
+            return countries.ToList();
+        }
+
+        /// <summary>
+        /// Get organization by id.
+        /// </summary>
+        /// <returns>Organization with the following id.</returns>
+        /// <response code="200">Returns the organization with the following id.</response>
+        /// <response code="404">If the organization with the following id does not exist.</response
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Organization> GetById(int id)
+        {
+            if (!_organizations.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
+
+            return _organizations.GetItem(id);
         }
 
         /// <summary>
@@ -91,7 +110,7 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
 
             _organizations.Delete(organization);
-            return Ok(organization);
+            return organization;
         }
 
         /// <summary>
@@ -111,7 +130,7 @@ namespace TestTaskCSCteam.Controllers
             if (!_organizations.GetAllItems().Any(x => x.Id == organization.Id))
                 return NotFound();
             _organizations.Update(organization);
-            return Ok(organization);
+            return organization;
         }
     }
 }

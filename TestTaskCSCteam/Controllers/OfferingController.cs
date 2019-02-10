@@ -30,9 +30,9 @@ namespace TestTaskCSCteam.Controllers
         /// <returns>Array of offerings.</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<IEnumerable<Offering>> Get()
+        public IEnumerable<Offering> Get()
         {
-            return Ok(_offerings.GetAllItems());
+            return _offerings.GetAllItems();
         }
 
         /// <summary>
@@ -42,13 +42,33 @@ namespace TestTaskCSCteam.Controllers
         /// <response code="200">Returns departments with the following offering id</response>
         /// <response code="404">If the offering with the following id does not exist</response>
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("department/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<Department>> GetDepartmentsByIdOffering(int id)
         {
+            if (!_offerings.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
             var departments = _departments.GetItemsByParentId(id);
-            return Ok(departments);
+            return departments.ToList();
+        }
+
+        /// <summary>
+        /// Get offering by id.
+        /// </summary>
+        /// <returns>Offering with the following id.</returns>
+        /// <response code="200">Returns the offering with the following id.</response>
+        /// <response code="404">If the offering with the following id does not exist.</response
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Offering> GetById(int id)
+        {
+            if (!_offerings.GetAllItems().Any(x => x.Id == id))
+                return NotFound();
+
+            return _offerings.GetItem(id);
         }
 
         /// <summary>
@@ -65,6 +85,8 @@ namespace TestTaskCSCteam.Controllers
         {
             try
             {
+                if (offering == null)
+                    return BadRequest();
                 _offerings.Create(offering);
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
@@ -92,7 +114,7 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
 
             _offerings.Delete(offering);
-            return Ok(offering);
+            return offering;
         }
 
         /// <summary>
@@ -112,7 +134,7 @@ namespace TestTaskCSCteam.Controllers
             if (!_offerings.GetAllItems().Any(x => x.Id == offering.Id))
                 return NotFound();
             _offerings.Update(offering);
-            return Ok(offering);
+            return offering;
         }
     }
 }
