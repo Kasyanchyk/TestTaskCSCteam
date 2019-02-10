@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace TestTaskCSCteam.Models
 {
-    public class Business : BaseEntityChild<Country>//MenuItem<Country, Family>
+    public class Business : BaseEntityChild<Country>
     {
         [Required]
         public string Name { get; set; }

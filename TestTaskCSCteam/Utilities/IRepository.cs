@@ -11,8 +11,6 @@ namespace TestTaskCSCteam.Utilities
 
         T GetItem(int id, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
 
-        //T GetItemsByParentId(int id, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
-
         void Create(T entity);
 
         void Update(T entity);

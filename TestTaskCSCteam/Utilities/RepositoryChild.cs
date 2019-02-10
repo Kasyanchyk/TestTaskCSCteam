@@ -24,21 +24,12 @@ namespace TestTaskCSCteam.Utilities
         public IQueryable<T> GetItemsByParentId(int id, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
         {
             _logger.LogInformation("Getting {0} items by {1} id", typeof(P), typeof(T));
-            var objectP = _entitiesP.FirstOrDefault(x => x.Id == id);
-            if (objectP == null)
-            {
-                return null;
-            }
-            IQueryable<T> query = _entities.Where(x => x.Parent == objectP);
+            IQueryable<T> query = _entities.Where(x => x.ParentId == id);
             if (includes != null)
             {
                 query = includes(query);
             }
-            
-            var list = query.ToList()
-                .Select(c => { c.Parent = null; return c; });
-
-            return list.AsQueryable();
+            return query;
         }
     }
 }

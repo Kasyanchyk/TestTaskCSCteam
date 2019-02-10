@@ -93,6 +93,10 @@ namespace TestTaskCSCteam.Controllers
             {
                 return BadRequest();
             }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
 
             return CreatedAtAction(nameof(Create), family);
         }
@@ -109,12 +113,19 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Family> Delete(int id)
         {
-            var family = _families.GetAllItems().FirstOrDefault(x => x.Id == id);
-            if (family == null)
-                return NotFound();
+            try
+            {
+                var family = _families.GetAllItems().FirstOrDefault(x => x.Id == id);
+                if (family == null)
+                    return NotFound();
 
-            _families.Delete(family);
-            return family;
+                _families.Delete(family);
+                return family;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -131,10 +142,17 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Family> Update(Family family)
         {
-            if (!_families.GetAllItems().Any(x => x.Id == family.Id))
-                return NotFound();
-            _families.Update(family);
-            return family;
+            try
+            {
+                if (!_families.GetAllItems().Any(x => x.Id == family.Id))
+                    return NotFound();
+                _families.Update(family);
+                return family;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

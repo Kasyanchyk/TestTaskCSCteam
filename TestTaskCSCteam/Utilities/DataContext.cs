@@ -20,7 +20,7 @@ namespace TestTaskCSCteam.Utilities
 
         public DbSet<Offering> Offerings { get; set; }
 
-        public DbSet<Department> Departments { get; set; } 
+        public DbSet<Department> Departments { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -56,19 +56,19 @@ namespace TestTaskCSCteam.Utilities
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Country>()
-                .HasIndex(t => new { t.Name, t.ParentId })
+                .HasIndex(t => new { t.ParentId, t.Name })
                 .IsUnique();
             modelBuilder.Entity<Business>()
-                .HasIndex(t => new { t.Name, t.ParentId })
+                .HasIndex(t => new { t.ParentId, t.Name })
                 .IsUnique();
             modelBuilder.Entity<Family>()
-                .HasIndex(t => new { t.Name, t.ParentId })
+                .HasIndex(t => new { t.ParentId, t.Name })
                 .IsUnique();
             modelBuilder.Entity<Offering>()
-                .HasIndex(t => new { t.Name, t.ParentId })
+                .HasIndex(t => new { t.ParentId, t.Name })
                 .IsUnique();
             modelBuilder.Entity<Department>()
-                .HasIndex(t => new { t.Name, t.ParentId })
+                .HasIndex(t => new { t.ParentId, t.Name })
                 .IsUnique();
 
             base.OnModelCreating(modelBuilder);

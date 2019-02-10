@@ -93,6 +93,10 @@ namespace TestTaskCSCteam.Controllers
             {
                 return BadRequest();
             }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
 
             return CreatedAtAction(nameof(Create), business);
         }
@@ -109,12 +113,19 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Business> Delete(int id)
         {
-            var business = _businesses.GetAllItems().FirstOrDefault(x => x.Id == id);
-            if (business == null)
-                return NotFound();
+            try
+            {
+                var business = _businesses.GetAllItems().FirstOrDefault(x => x.Id == id);
+                if (business == null)
+                    return NotFound();
 
-            _businesses.Delete(business);
-            return business;
+                _businesses.Delete(business);
+                return business;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -131,10 +142,17 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Business> Update(Business business)
         {
-            if (!_businesses.GetAllItems().Any(x => x.Id == business.Id))
-                return NotFound();
-            _businesses.Update(business);
-            return business;
+            try
+            {
+                if (!_businesses.GetAllItems().Any(x => x.Id == business.Id))
+                    return NotFound();
+                _businesses.Update(business);
+                return business;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

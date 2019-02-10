@@ -72,6 +72,7 @@ namespace TestTaskCSCteam.Utilities
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, "{0} item", typeof(T));
+                throw;
             }
 
         }
@@ -88,6 +89,7 @@ namespace TestTaskCSCteam.Utilities
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, "{0} item", typeof(T));
+                throw;
             }
         }
 
@@ -102,6 +104,7 @@ namespace TestTaskCSCteam.Utilities
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, "{0} item", typeof(T));
+                throw;
             }
         }
     }

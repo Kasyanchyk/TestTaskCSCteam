@@ -94,6 +94,10 @@ namespace TestTaskCSCteam.Controllers
             {
                 return BadRequest();
             }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
 
             return CreatedAtAction(nameof(Create), country);
         }
@@ -108,14 +112,21 @@ namespace TestTaskCSCteam.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Country> Delete(int id)
         {
-            var country = _countries.GetAllItems().FirstOrDefault(x => x.Id == id);
-            if (country == null)
-                return NotFound();
-
-            _countries.Delete(country);
-            return country;
+            try
+            {
+                var country = _countries.GetAllItems().FirstOrDefault(x => x.Id == id);
+                if (country == null)
+                    return NotFound();
+                _countries.Delete(country);
+                return country;
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -132,10 +143,17 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Country> Update(Country country)
         {
-            if (!_countries.GetAllItems().Any(x => x.Id == country.Id))
-                return NotFound();
-            _countries.Update(country);
-            return country;
+            try
+            {
+                if (!_countries.GetAllItems().Any(x => x.Id == country.Id))
+                    return NotFound();
+                _countries.Update(country);
+                return country;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

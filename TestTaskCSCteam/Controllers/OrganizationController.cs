@@ -54,7 +54,7 @@ namespace TestTaskCSCteam.Controllers
                 return NotFound();
             var countries = _countries.GetItemsByParentId(id);
             return countries.ToList();
-        }
+         }
 
         /// <summary>
         /// Get organization by id.
@@ -86,10 +86,17 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Organization> Create(Organization organization)
         {
-            if (organization == null)
+            try
+            {
+                if (organization == null)
+                    return BadRequest();
+                _organizations.Create(organization);
+                return CreatedAtAction(nameof(Create), organization);
+            }
+            catch (Exception)
+            {
                 return BadRequest();
-            _organizations.Create(organization);
-            return CreatedAtAction(nameof(Create),organization);
+            }
         }
 
 
@@ -105,12 +112,19 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Organization> Delete(int id)
         {
-            var organization = _organizations.GetAllItems().FirstOrDefault(x => x.Id == id);
-            if (organization == null)
-                return NotFound();
+            try
+            {
+                var organization = _organizations.GetAllItems().FirstOrDefault(x => x.Id == id);
+                if (organization == null)
+                    return NotFound();
 
-            _organizations.Delete(organization);
-            return organization;
+                _organizations.Delete(organization);
+                return organization;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -127,10 +141,17 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Organization> Update(Organization organization)
         {
-            if (!_organizations.GetAllItems().Any(x => x.Id == organization.Id))
-                return NotFound();
-            _organizations.Update(organization);
-            return organization;
+            try
+            {
+                if (!_organizations.GetAllItems().Any(x => x.Id == organization.Id))
+                    return NotFound();
+                _organizations.Update(organization);
+                return organization;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

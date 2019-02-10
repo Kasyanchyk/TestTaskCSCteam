@@ -72,6 +72,10 @@ namespace TestTaskCSCteam.Controllers
             {
                 return BadRequest();
             }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
             return CreatedAtAction(nameof(Create), department);
         }
@@ -88,12 +92,19 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Department> Delete(int id)
         {
-            var department = _departments.GetAllItems().FirstOrDefault(x => x.Id == id);
-            if (department == null)
-                return NotFound();
+            try
+            {
+                var department = _departments.GetAllItems().FirstOrDefault(x => x.Id == id);
+                if (department == null)
+                    return NotFound();
 
-            _departments.Delete(department);
-            return department;
+                _departments.Delete(department);
+                return department;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         /// <summary>
@@ -110,10 +121,17 @@ namespace TestTaskCSCteam.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Department> Update(Department department)
         {
-            if (!_departments.GetAllItems().Any(x => x.Id == department.Id))
-                return NotFound();
-            _departments.Update(department);
-            return department;
+            try
+            {
+                if (!_departments.GetAllItems().Any(x => x.Id == department.Id))
+                    return NotFound();
+                _departments.Update(department);
+                return department;
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }
