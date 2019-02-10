@@ -8,7 +8,7 @@ I used technology stack:
 - Documentation: Swagger
 
 Unit tests coverage. 
-![Code coverage](https://prnt.sc/mj9dpx)
+![Code coverage](https://ibb.co/Tq7nMYc)
 
 ## About API
 Api has this structure (item is a member of the hierarchy, for example **Organization, Country, Business...**) : 
