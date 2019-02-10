@@ -21,7 +21,7 @@ Api has this structure (item is a member of the hierarchy, for example **Organiz
 - GET: api/auth/sigin - Redirect to Facebook authorize page and redirect to /api/organization
 - GET: api/auth/signout - Signout and redirect to /api/organization.
 ### Test Data
-Use GET: api/create-test-data for add 
+Use GET: api/create-test-data
 
 ## Json Templates
 ### Organization API
