@@ -7,9 +7,6 @@ I used technology stack:
 - Unit tests: XUnit, dotCover
 - Documentation: Swagger
 
-Unit tests coverage. 
-![Code coverage](https://ibb.co/Tq7nMYc)
-
 ## About API
 Api has this structure (item is a member of the hierarchy, for example **Organization, Country, Business...**) : 
 - GET: api/**item** - Get all items.
@@ -127,3 +124,6 @@ JSON for PUT methods :
   "parentId": 0
 }
  ```
+## Unit test
+Unit tests coverage. I used dotCover by JetBrains
+![Code coverage](https://i.ibb.co/R4sMTY2/image.png)
