@@ -19,7 +19,7 @@ Api has this structure (item is a member of the hierarchy, for example **Organiz
 ### Facebook Authentification
 - GET: api/auth - Get authentification status (authorized or not authorized).
 - GET: api/auth/sigin - Redirect to Facebook authorize page and redirect to /api/organization
-- GET: api/auth/sigou - Signout and redirect to /api/organization.
+- GET: api/auth/signout - Signout and redirect to /api/organization.
 ### Test Data
 Use GET: api/create-test-data for add 
 
